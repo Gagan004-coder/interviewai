@@ -123,7 +123,10 @@ export default function CompanyDashboard() {
                 }}>📋 Copy to Clipboard</button>
               </div>
             ) : (
-              <button className="btn btn-primary w-full" style={{justifyContent: 'center'}} onClick={() => setInviteLink(`${window.location.origin}/company/secure-interview?domain=${encodeURIComponent(inviteDomain)}`)}>
+              <button className="btn btn-primary w-full" style={{justifyContent: 'center'}} onClick={() => {
+                const baseUrl = window.location.hostname === 'localhost' ? 'https://app.interviewai.dev' : window.location.origin;
+                setInviteLink(`${baseUrl}/company/secure-interview?domain=${encodeURIComponent(inviteDomain)}`)
+              }}>
                 🔗 Generate Link
               </button>
             )}

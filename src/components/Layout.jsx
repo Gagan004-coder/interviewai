@@ -1,11 +1,22 @@
 import { Outlet, NavLink, useNavigate } from 'react-router-dom'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import AIChat from './AIChat'
 import './Layout.css'
 
 export default function Layout() {
   const navigate = useNavigate()
   const [collapsed, setCollapsed] = useState(false)
+  const [theme, setTheme] = useState(localStorage.getItem('iai_theme') || 'dark')
   const user = JSON.parse(localStorage.getItem('iai_user') || '{}')
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme)
+    localStorage.setItem('iai_theme', theme)
+  }, [theme])
+
+  function toggleTheme() {
+    setTheme(t => t === 'dark' ? 'light' : 'dark')
+  }
 
   let nav = []
   if (user.role === 'admin') {
@@ -43,9 +54,14 @@ export default function Layout() {
             <span className="logo-icon">🧠</span>
             {!collapsed && <span className="logo-text">InterviewAI</span>}
           </div>
-          <button className="collapse-btn" onClick={() => setCollapsed(c => !c)}>
-            {collapsed ? '→' : '←'}
-          </button>
+          <div style={{display: 'flex', gap: '4px'}}>
+            <button className="collapse-btn" onClick={toggleTheme} title="Toggle Theme" style={{padding: '0 8px'}}>
+              {theme === 'dark' ? '☀️' : '🌙'}
+            </button>
+            <button className="collapse-btn" onClick={() => setCollapsed(c => !c)}>
+              {collapsed ? '→' : '←'}
+            </button>
+          </div>
         </div>
 
         <nav className="sidebar-nav">
@@ -80,6 +96,9 @@ export default function Layout() {
       <main className="main-content">
         <Outlet />
       </main>
+
+      {/* Floating AI Chat Assistant */}
+      <AIChat />
     </div>
   )
 }

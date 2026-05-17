@@ -21,7 +21,12 @@ router.get('/', async (req, res) => {
       communication: r.communication,
       confidence:    r.confidence,
       grammar:       r.grammar,
-      answers:       typeof r.answers === 'string' ? JSON.parse(r.answers) : r.answers,
+      answers:       (function() {
+        if (typeof r.answers === 'string') {
+          try { return JSON.parse(r.answers) } catch (e) { return [] }
+        }
+        return r.answers || []
+      })(),
       date:          r.date,
     }))
     res.json(interviews)

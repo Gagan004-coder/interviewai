@@ -24,7 +24,10 @@ router.post('/register', async (req, res) => {
     const user = { id: result.insertId, name: displayName.trim(), email: email.toLowerCase(), role, joinedAt: new Date().toISOString() }
     const token = jwt.sign({ userId: user.id, role }, SECRET, { expiresIn: '30d' })
     res.json({ token, user })
-  } catch (err) { res.status(500).json({ error: 'Server error during registration.' }) }
+  } catch (err) {
+    console.error('Registration error:', err);
+    res.status(500).json({ error: 'Server error during registration.' });
+  }
 })
 
 // POST /api/auth/login

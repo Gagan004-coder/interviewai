@@ -1,0 +1,63 @@
+.auth-page {
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--bg-primary);
+  padding: 24px;
+  position: relative; overflow: hidden;
+}
+.auth-bg-orb {
+  position: absolute;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(124,58,237,0.15) 0%, transparent 70%);
+  top: 50%; left: 50%; transform: translate(-50%,-50%);
+  pointer-events: none;
+}
+.auth-card {
+  width: 100%; max-width: 420px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  padding: 40px;
+  position: relative; z-index: 1;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+}
+.auth-logo {
+  font-size: 24px; font-weight: 900;
+  background: var(--gradient-main);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  text-align: center; margin-bottom: 4px;
+}
+.auth-tagline { text-align: center; color: var(--text-muted); font-size: 13px; margin-bottom: 28px; }
+
+.role-tabs {
+  display: flex; gap: 8px; margin-bottom: 8px;
+}
+.role-tab {
+  flex: 1; padding: 10px; border-radius: 8px;
+  border: 1px solid var(--glass-border); background: rgba(255,255,255,0.02);
+  color: var(--text-secondary); font-weight: 600; font-size: 13px;
+  cursor: pointer; transition: var(--transition);
+}
+.role-tab:hover { background: rgba(255,255,255,0.05); }
+.role-tab.active { background: var(--gradient-main); color: #fff; border-color: transparent; }
+.role-desc { text-align: center; font-size: 12px; color: var(--text-muted); margin-bottom: 16px; height: 16px; }
+
+.auth-tabs {
+  display: flex; gap: 4px;
+  background: rgba(255,255,255,0.04);
+  border-radius: var(--radius-md);
+  padding: 4px; margin-bottom: 28px;
+}
+.auth-tab {
+  flex: 1; padding: 9px; border-radius: 8px;
+  border: none; background: none;
+  color: var(--text-secondary); font-weight: 600; font-size: 14px;
+  cursor: pointer; transition: var(--transition); font-family: var(--font);
+}
+.auth-tab.active { background: var(--gradient-main); color: #fff; }
+
+.auth-form { display: flex; flex-direction: column; gap: 16px; }
+
+.auth-demo { margin-top: 20px; text-align: center; font-size: 13px; color: var(--text-muted); }
+.auth-demo-btn { background: none; border: none; color: var(--accent-cyan); cursor: pointer; font-size: 13px; font-weight: 600; }
+.auth-demo-btn:hover { text-decoration: underline; }

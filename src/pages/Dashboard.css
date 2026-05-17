@@ -1,0 +1,69 @@
+.dashboard { max-width: 1100px; }
+
+.dash-header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  margin-bottom: 24px; gap: 16px; flex-wrap: wrap;
+}
+.dash-alert {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 18px; border-radius: var(--radius-md);
+  background: rgba(245,158,11,0.08);
+  border: 1px solid rgba(245,158,11,0.25);
+  color: var(--accent-orange);
+  font-size: 14px; margin-bottom: 24px;
+}
+.dash-alert span:nth-child(2) { flex: 1; }
+.dash-alert strong { color: var(--text-primary); }
+
+.dash-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px; margin-bottom: 32px;
+}
+
+.dash-section-title {
+  font-size: 16px; font-weight: 700; color: var(--text-secondary);
+  text-transform: uppercase; letter-spacing: 0.08em;
+  margin-bottom: 14px;
+}
+
+.domain-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+}
+.domain-card {
+  display: flex; align-items: center; gap: 10px;
+  padding: 16px 18px; border-radius: var(--radius-md);
+  background: var(--bg-card);
+  border: 1px solid var(--glass-border);
+  cursor: pointer; transition: var(--transition);
+  font-family: var(--font); color: var(--text-primary);
+  font-size: 14px; font-weight: 600; text-align: left;
+}
+.domain-card:hover { border-color: var(--accent-purple); background: rgba(124,58,237,0.1); transform: translateY(-2px); }
+.domain-card-icon { font-size: 22px; flex-shrink: 0; }
+.domain-card-name { flex: 1; }
+.domain-card-arrow { color: var(--text-muted); }
+
+.dash-empty {
+  text-align: center; padding: 48px;
+  color: var(--text-muted); font-size: 15px;
+  border: 1px dashed var(--glass-border);
+  border-radius: var(--radius-lg);
+}
+.dash-empty-icon { font-size: 48px; margin-bottom: 12px; }
+
+.recent-list { display: flex; flex-direction: column; gap: 10px; }
+.recent-item {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 18px; border-radius: var(--radius-md);
+  background: var(--bg-card); border: 1px solid var(--glass-border);
+  transition: var(--transition);
+}
+.recent-item:hover { background: var(--bg-card-hover); }
+.recent-icon { font-size: 24px; }
+.recent-info { flex: 1; }
+.recent-domain { font-weight: 600; font-size: 14px; }
+.recent-date { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+.recent-score { font-size: 22px; font-weight: 800; min-width: 56px; text-align: right; }

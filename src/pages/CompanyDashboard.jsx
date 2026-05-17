@@ -10,6 +10,11 @@ export default function CompanyDashboard() {
   const [candidateInterviews, setCandidateInterviews] = useState([])
   const [loading, setLoading] = useState(true)
 
+  // Invite Modal State
+  const [inviteModalOpen, setInviteModalOpen] = useState(false)
+  const [inviteDomain, setInviteDomain] = useState('Full Stack')
+  const [inviteLink, setInviteLink] = useState('')
+
   const user = JSON.parse(localStorage.getItem('iai_user') || '{}')
 
   useEffect(() => {
@@ -29,7 +34,7 @@ export default function CompanyDashboard() {
           <h1 className="page-title">Company Portal</h1>
           <p className="page-subtitle">Manage candidate assessments for {user.name}</p>
         </div>
-        <button className="btn btn-primary" onClick={() => alert('Invite Candidate feature coming soon!')}>
+        <button className="btn btn-primary" onClick={() => { setInviteLink(''); setInviteModalOpen(true); }}>
           ✉️ Invite Candidate
         </button>
       </div>
@@ -86,6 +91,45 @@ export default function CompanyDashboard() {
         </div>
 
       </div>
+
+      {/* Invite Modal */}
+      {inviteModalOpen && (
+        <div style={{position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, backdropFilter: 'blur(4px)'}}>
+          <div className="glass-card" style={{padding: 32, width: '100%', maxWidth: 460, position: 'relative'}}>
+            <button style={{position: 'absolute', top: 16, right: 16, background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: 18}} onClick={() => setInviteModalOpen(false)}>✕</button>
+            <h2 style={{marginBottom: 8}}>Invite Candidate</h2>
+            <p style={{color: 'var(--text-muted)', marginBottom: 24, fontSize: 14}}>Generate a secure interview link to send to your candidate.</p>
+            
+            <div className="form-group" style={{marginBottom: 20}}>
+              <label className="form-label">Interview Domain</label>
+              <select className="select" value={inviteDomain} onChange={(e) => { setInviteDomain(e.target.value); setInviteLink(''); }}>
+                <option value="Full Stack">Full Stack</option>
+                <option value="Frontend">Frontend (React)</option>
+                <option value="Backend">Backend (Node/Python)</option>
+                <option value="DevOps">DevOps</option>
+                <option value="Data Science">Data Science</option>
+              </select>
+            </div>
+
+            {inviteLink ? (
+              <div style={{display: 'flex', flexDirection: 'column', gap: 12}}>
+                <div style={{padding: 12, background: 'rgba(255,255,255,0.05)', borderRadius: 8, fontFamily: 'var(--font-mono)', fontSize: 12, wordBreak: 'break-all', border: '1px solid var(--glass-border)', color: 'var(--accent-cyan)'}}>
+                  {inviteLink}
+                </div>
+                <button className="btn btn-primary w-full" style={{justifyContent: 'center'}} onClick={() => {
+                  navigator.clipboard.writeText(inviteLink)
+                  alert('Link copied to clipboard! You can now send it to the candidate.')
+                  setInviteModalOpen(false)
+                }}>📋 Copy to Clipboard</button>
+              </div>
+            ) : (
+              <button className="btn btn-primary w-full" style={{justifyContent: 'center'}} onClick={() => setInviteLink(`${window.location.origin}/company/secure-interview?domain=${encodeURIComponent(inviteDomain)}`)}>
+                🔗 Generate Link
+              </button>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   )
 }

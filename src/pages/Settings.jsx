@@ -46,10 +46,17 @@ export default function Settings() {
             <div className="model-item"><span className="model-label">Interviews</span><span className="model-val">{interviews.length}</span></div>
           </div>
           {user.role === 'user' && (
-            <button className="btn btn-danger" style={{ marginTop: 16 }} onClick={clearData}>
+            <button className="btn btn-danger" style={{ marginTop: 16, marginRight: 12 }} onClick={clearData}>
               🗑 Clear Interview History
             </button>
           )}
+          <button className="btn btn-secondary" style={{ marginTop: 16 }} onClick={() => {
+            localStorage.removeItem('iai_user')
+            localStorage.removeItem('iai_token')
+            window.location.href = '/auth'
+          }}>
+            🚪 Logout
+          </button>
         </div>
       </div>
 

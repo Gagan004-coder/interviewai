@@ -88,7 +88,10 @@ export default function Layout() {
               </div>
             )}
           </div>
-          <button className="logout-btn" onClick={logout} title="Logout">🚪</button>
+          <button className="logout-btn" onClick={logout} title="Logout" style={{display:'flex', alignItems:'center', gap:'8px', cursor:'pointer', border:'none', background:'none', color:'var(--text-muted)'}}>
+            <span style={{fontSize:'18px'}}>🚪</span>
+            {!collapsed && <span style={{fontWeight:600}}>Logout</span>}
+          </button>
         </div>
       </aside>
 

@@ -53,39 +53,6 @@ export default function Settings() {
         </div>
       </div>
 
-      {/* Feature Stack */}
-      <div className="settings-card">
-        <div className="sc-header">
-          <div className="sc-icon">🏗️</div>
-          <div>
-            <div className="sc-title">Feature Stack</div>
-            <div className="sc-sub">Technologies powering InterviewAI</div>
-          </div>
-        </div>
-        <div className="sc-body">
-          <div className="tech-table">
-            {[
-              ['AI Engine', 'Groq LLaMA 3.3 70B (Server-side)', '🤖'],
-              ['Answer Evaluation', 'Groq NLP Scoring', '📝'],
-              ['Resume Parsing', 'pdfjs-dist', '📄'],
-              ['Speech Recognition', 'Web Speech API', '🎤'],
-              ['Face Detection', 'face-api.js (TensorFlow.js)', '😊'],
-              ['Eye Tracking', 'Facial Landmark Gaze Analysis', '👁'],
-              ['Tab Monitoring', 'Visibility + Focus API', '🔒'],
-              ['Charts', 'Chart.js + react-chartjs-2', '📊'],
-              ['Frontend', 'React + Vite', '⚛️'],
-              ['Storage', 'MySQL 8.0 (via Express API)', '🗄️'],
-              ['Auth', 'JWT + bcrypt (Role-based)', '🔑'],
-            ].map(([feat, tech, icon]) => (
-              <div key={feat} className="tech-row">
-                <span className="tech-icon">{icon}</span>
-                <span className="tech-feat">{feat}</span>
-                <span className="tech-name">{tech}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
     </div>
   )
 }

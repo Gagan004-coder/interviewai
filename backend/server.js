@@ -2,6 +2,7 @@ require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
 const pool = require('./db')
+const path = require('path')
 
 const authRoutes      = require('./routes/auth')
 const interviewRoutes = require('./routes/interviews')
@@ -28,6 +29,14 @@ app.get('/api/health', async (_req, res) => {
   } catch (err) {
     res.status(500).json({ status: 'error', database: 'disconnected', error: err.message })
   }
+})
+
+// Serve React Frontend (For Render Deployment)
+app.use(express.static(path.join(__dirname, '../dist')))
+
+// Catch-all route to hand off routing to React Router
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../dist/index.html'))
 })
 
 app.listen(PORT, () => {

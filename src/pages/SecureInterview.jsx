@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { generateQuestions, evaluateAnswer } from '../services/groq'
+import { generateQuestions, evaluateAnswer } from '../services/gemini'
 import { apiSaveInterview } from '../services/api'
 import { detectFillerWords, speakingSpeed, voiceConfidence, formatTime } from '../utils/helpers'
 import FaceDetector from '../components/FaceDetector'

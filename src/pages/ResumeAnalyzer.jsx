@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
-import { analyzeResume } from '../services/groq'
+import { analyzeResume } from '../services/gemini'
 import { Radar } from 'react-chartjs-2'
 import { Chart as ChartJS, RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend } from 'chart.js'
 import './ResumeAnalyzer.css'
@@ -54,8 +54,8 @@ export default function ResumeAnalyzer() {
 
   async function analyze() {
     if (!rawText) { setError('Please upload a PDF resume first.'); return }
-    const groqKey = localStorage.getItem('iai_groq_key')
-    if (!groqKey) { setError('Add your Groq API key in Settings to use the Resume Analyzer.'); return }
+    const geminiKey = localStorage.getItem('iai_gemini_key') || true
+    if (!geminiKey) { setError('Add your Gemini API key in Settings to use the Resume Analyzer.'); return }
     setLoading(true); setError('')
     try {
       const r = await analyzeResume(rawText, jobRole)
@@ -93,7 +93,7 @@ export default function ResumeAnalyzer() {
   return (
     <div className="resume-page">
       <h1 className="page-title">📄 Resume Analyzer</h1>
-      <p className="page-subtitle">Upload your PDF resume to get ATS score, skill analysis & Groq AI feedback</p>
+      <p className="page-subtitle">Upload your PDF resume to get ATS score, skill analysis & Gemini AI feedback</p>
 
       <div className="resume-grid">
         {/* Upload Panel */}
@@ -115,7 +115,7 @@ export default function ResumeAnalyzer() {
           {error && <div className="iv-error">{error}</div>}
 
           <button className="btn btn-primary w-full" style={{justifyContent:'center',marginTop:8}} disabled={loading || !rawText} onClick={analyze}>
-            {loading ? <><span className="spinner" /> Analyzing with Groq AI...</> : '🔍 Analyze Resume'}
+            {loading ? <><span className="spinner" /> Analyzing with Gemini AI...</> : '🔍 Analyze Resume'}
           </button>
 
           {rawText && (

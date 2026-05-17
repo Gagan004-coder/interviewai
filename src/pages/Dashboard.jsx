@@ -9,7 +9,7 @@ const DOMAIN_ICONS = { 'DevOps': '⚙️', 'Cloud Computing': '☁️', 'AI / ML
 export default function Dashboard() {
   const navigate = useNavigate()
   const user = JSON.parse(localStorage.getItem('iai_user') || '{}')
-  const hasKey = !!localStorage.getItem('iai_groq_key')
+  const hasKey = !!localStorage.getItem('iai_gemini_key') || true // Assume configured on backend
 
   const [interviews, setInterviews] = useState([])
   const [loadingData, setLoadingData] = useState(true)
@@ -45,7 +45,7 @@ export default function Dashboard() {
       {!hasKey && (
         <div className="dash-alert">
           <span>⚠️</span>
-          <span>Add your <strong>Groq API key</strong> in Settings to enable AI question generation &amp; answer evaluation.</span>
+          <span>Add your <strong>Gemini API key</strong> in Settings to enable AI question generation &amp; answer evaluation.</span>
           <button className="btn btn-sm btn-secondary" onClick={() => navigate('/app/settings')}>Add Key →</button>
         </div>
       )}

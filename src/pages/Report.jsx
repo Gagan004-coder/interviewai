@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { generateReportInsights } from '../services/groq'
+import { generateReportInsights } from '../services/gemini'
 import { Radar, Bar, Doughnut } from 'react-chartjs-2'
 import {
   Chart as ChartJS, RadialLinearScale, PointElement, LineElement,
@@ -32,7 +32,7 @@ export default function Report() {
 
   useEffect(() => {
     if (interview && !insights) {
-      const key = localStorage.getItem('iai_groq_key')
+      const key = localStorage.getItem('iai_gemini_key') || true
       if (key) {
         setInsLoading(true)
         generateReportInsights({
@@ -142,7 +142,7 @@ export default function Report() {
       {/* AI Insights */}
       {(insights || insLoading) && (
         <div className="rp-insights-card">
-          <div className="rp-section-title">🤖 Groq AI Insights</div>
+          <div className="rp-section-title">🤖 Gemini AI Insights</div>
           {insLoading ? (
             <div style={{display:'flex',gap:10,alignItems:'center',color:'var(--text-muted)'}}><span className="spinner"/> Generating AI insights...</div>
           ) : insights && (

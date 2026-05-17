@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { generateQuestions, evaluateAnswer } from '../services/groq'
+import { generateQuestions, evaluateAnswer } from '../services/gemini'
 import { apiSaveInterview } from '../services/api'
 import { detectFillerWords, speakingSpeed, voiceConfidence, formatTime } from '../utils/helpers'
 import FaceDetector from '../components/FaceDetector'
@@ -96,9 +96,9 @@ export default function Interview() {
     if (!domain) return
     setLoading(true); setError('')
     try {
-      const groqKey = localStorage.getItem('iai_groq_key')
+      const geminiKey = localStorage.getItem('iai_gemini_key') || true
       let qs
-      if (groqKey) {
+      if (geminiKey) {
         try { qs = await generateQuestions(domain, 5) }
         catch { qs = FALLBACK_QUESTIONS[domain] || FALLBACK_QUESTIONS['Full Stack'] }
       } else {
@@ -150,8 +150,8 @@ export default function Interview() {
     const voiceConf = voiceConfidence(wpm, fillerCount, ans.length)
 
     let eval_result = { relevance: 50, technical: 50, grammar: 60, confidence: voiceConf, overall: 55, feedback: 'Answer evaluated locally.', tips: [] }
-    const groqKey = localStorage.getItem('iai_groq_key')
-    if (groqKey && ans.length > 10) {
+    const geminiKey = localStorage.getItem('iai_gemini_key') || true
+    if (geminiKey && ans.length > 10) {
       try { eval_result = await evaluateAnswer(q.question, ans, domain) }
       catch { /* keep local eval */ }
     }
@@ -202,7 +202,7 @@ export default function Interview() {
   if (step === STEPS.SELECT || step === STEPS.READY) return (
     <div className="interview-page">
       <h1 className="page-title">🎤 AI Mock Interview</h1>
-      <p className="page-subtitle">Select your domain and let Groq AI generate personalized questions</p>
+      <p className="page-subtitle">Select your domain and let Gemini AI generate personalized questions</p>
 
       <div className="domain-select-grid">
         {DOMAINS.map(d => (
@@ -238,7 +238,7 @@ export default function Interview() {
       <div className="done-card">
         <div className="done-emoji">🎉</div>
         <h2 className="done-title">Interview Complete!</h2>
-        <p className="done-sub">Your answers have been evaluated by Groq AI</p>
+        <p className="done-sub">Your answers have been evaluated by Gemini AI</p>
         <div className="done-score">
           {Math.round(answers.reduce((s,a)=>s+a.overall,0)/answers.length)}%
           <span>Overall Score</span>
@@ -316,7 +316,7 @@ export default function Interview() {
             disabled={evalLoading}
             onClick={handleSubmitAnswer}>
             {evalLoading
-              ? <><span className="spinner" /> Evaluating with Groq AI...</>
+              ? <><span className="spinner" /> Evaluating with Gemini AI...</>
               : qIndex + 1 < questions.length ? `Submit & Next Question →` : `Submit & See Results 🎉`}
           </button>
         </div>

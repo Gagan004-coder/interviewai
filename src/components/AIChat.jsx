@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { groqChat } from '../services/groq'
+import { geminiChat } from '../services/gemini'
 import './AIChat.css'
 
 export default function AIChat() {
@@ -32,7 +32,7 @@ export default function AIChat() {
         content: 'You are a friendly and extremely concise AI assistant for InterviewAI. Help the user navigate the platform, give brief interview tips, or answer quick technical questions. Keep responses under 4 sentences.' 
       }
       const apiMessages = [sysMsg, ...messages, userMsg].map(m => ({ role: m.role, content: m.content }))
-      const replyText = await groqChat(apiMessages, { temperature: 0.5, max_tokens: 300 })
+      const replyText = await geminiChat(apiMessages, { temperature: 0.5, max_tokens: 300 })
       
       setMessages(prev => [...prev, { role: 'assistant', content: replyText }])
     } catch (err) {

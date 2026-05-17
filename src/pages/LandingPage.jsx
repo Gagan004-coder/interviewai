@@ -1,12 +1,13 @@
 import { useNavigate } from 'react-router-dom'
 import './LandingPage.css'
+import GeminiLogo from '../components/GeminiLogo'
 
 const FEATURES = [
-  { icon: '🎤', title: 'AI Mock Interview', desc: 'Domain-specific questions generated live by Groq LLaMA for DevOps, Cloud, AI/ML, Java, Python & Full Stack.' },
-  { icon: '📄', title: 'Resume Analyzer', desc: 'Upload your PDF resume. Get ATS score, skill extraction, missing skills & Groq-powered improvement tips.' },
+  { icon: '🎤', title: 'AI Mock Interview', desc: 'Domain-specific questions generated live by Gemini for DevOps, Cloud, AI/ML, Java, Python & Full Stack.' },
+  { icon: '📄', title: 'Resume Analyzer', desc: 'Upload your PDF resume. Get ATS score, skill extraction, missing skills & Gemini-powered improvement tips.' },
   { icon: '🗣️', title: 'Voice Analysis', desc: 'Detects confidence, fluency, speaking speed (WPM) and filler words using your browser\'s speech API.' },
   { icon: '😊', title: 'Emotion Detection', desc: 'Real-time facial emotion detection via your webcam — tracks confidence, nervousness & eye contact.' },
-  { icon: '🤖', title: 'AI Answer Evaluation', desc: 'Groq AI evaluates your answers on relevance, technical depth, grammar and overall confidence.' },
+  { icon: '🤖', title: 'AI Answer Evaluation', desc: 'Gemini AI evaluates your answers on relevance, technical depth, grammar and overall confidence.' },
   { icon: '📊', title: 'Performance Report', desc: 'Full score breakdown with radar charts, emotion timeline, weak areas and a personalized action plan.' },
 ]
 
@@ -38,7 +39,7 @@ export default function LandingPage() {
         <div className="hero-bg-orb orb2" />
         <div className="hero-bg-orb orb3" />
         <div className="hero-content">
-          <span className="hero-pill">✨ Powered by Groq LLaMA 3.3 70B</span>
+          <span className="hero-pill"><GeminiLogo style={{ marginRight: '8px' }} /> Powered by Gemini 1.5 Flash</span>
           <h1 className="hero-title">
             Ace Every Interview<br />
             <span className="gradient-text">with AI-Powered Practice</span>
@@ -58,7 +59,7 @@ export default function LandingPage() {
           <div className="hero-stats">
             <div className="hero-stat"><span className="hero-stat-val">6</span><span className="hero-stat-lab">Domains</span></div>
             <div className="hero-stat-div" />
-            <div className="hero-stat"><span className="hero-stat-val">AI</span><span className="hero-stat-lab">Groq Powered</span></div>
+            <div className="hero-stat"><span className="hero-stat-val">AI</span><span className="hero-stat-lab">Gemini Powered</span></div>
             <div className="hero-stat-div" />
             <div className="hero-stat"><span className="hero-stat-val">100%</span><span className="hero-stat-lab">Browser-Based</span></div>
           </div>
@@ -68,7 +69,7 @@ export default function LandingPage() {
       {/* ── Domains ── */}
       <section className="section">
         <h2 className="section-title">Interview <span className="gradient-text">Domains</span></h2>
-        <p className="section-sub">Groq AI generates fresh, unique questions every time</p>
+        <p className="section-sub">Gemini AI generates fresh, unique questions every time</p>
         <div className="domains-grid">
           {DOMAINS.map((d, i) => (
             <div className="domain-chip" key={i}
@@ -107,7 +108,7 @@ export default function LandingPage() {
       {/* ── Footer ── */}
       <footer className="land-footer">
         <span>🧠 InterviewAI</span>
-        <span>Built with Groq + React + face-api.js</span>
+        <span>Built with Gemini + React + face-api.js</span>
       </footer>
     </div>
   )

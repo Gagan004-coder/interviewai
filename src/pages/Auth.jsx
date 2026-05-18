@@ -128,7 +128,7 @@ export default function Auth() {
                 <span style={{ position: 'relative', background: 'var(--card-bg)', padding: '0 8px', zIndex: 2 }}>OR</span>
               </div>
               <FacebookLogin
-                appId="2401909360220774"
+                appId="148348736488236"
                 scope="public_profile"
                 onSuccess={handleFacebookSuccess}
                 onFail={(error) => setError('Facebook login cancelled or failed.')}

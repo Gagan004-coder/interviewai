@@ -141,18 +141,7 @@ export default function Auth() {
           )}
         </form>
 
-        {role === 'user' && (
-          <div className="auth-demo">
-            <span>Demo? </span>
-            <button onClick={async () => {
-              try {
-                await apiLogin('demo@interviewai.dev', 'demo123456').catch(() =>
-                  apiRegister('Demo User', 'demo@interviewai.dev', 'demo123456', 'user'))
-                navigate('/app')
-              } catch (err) { setError(err.message) }
-            }} className="auth-demo-btn">Use demo account →</button>
-          </div>
-        )}
+
       </div>
     </div>
   )

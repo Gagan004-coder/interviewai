@@ -129,6 +129,7 @@ export default function Auth() {
               </div>
               <FacebookLogin
                 appId="2401909360220774"
+                scope="public_profile"
                 onSuccess={handleFacebookSuccess}
                 onFail={(error) => setError('Facebook login cancelled or failed.')}
                 className="btn w-full"

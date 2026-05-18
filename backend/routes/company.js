@@ -32,9 +32,9 @@ router.get('/candidates', async (req, res) => {
 router.get('/candidate/:id', async (req, res) => {
   try {
     const [rows] = await pool.query(
-      'SELECT * FROM interviews WHERE user_id=? ORDER BY date DESC', [req.params.id])
+      'SELECT * FROM interviews WHERE user_id=? ORDER BY created_at DESC', [req.params.id])
     const interviews = rows.map(r => ({
-      ...r, answers: typeof r.answers === 'string' ? JSON.parse(r.answers) : r.answers
+      ...r, date: r.created_at || r.date, answers: typeof r.answers === 'string' ? JSON.parse(r.answers) : r.answers
     }))
     res.json(interviews)
   } catch (err) { res.status(500).json({ error: err.message }) }

@@ -10,7 +10,7 @@ router.use(auth)
 router.get('/', async (req, res) => {
   try {
     const [rows] = await pool.query(
-      'SELECT * FROM interviews WHERE user_id = ? ORDER BY date DESC',
+      'SELECT * FROM interviews WHERE user_id = ? ORDER BY created_at DESC',
       [req.userId]
     )
     const interviews = rows.map(r => ({
@@ -27,7 +27,7 @@ router.get('/', async (req, res) => {
         }
         return r.answers || []
       })(),
-      date:          r.date,
+      date:          r.created_at || r.date,
     }))
     res.json(interviews)
   } catch (err) {
@@ -43,7 +43,7 @@ router.post('/', async (req, res) => {
 
   try {
     const [result] = await pool.query(
-      `INSERT INTO interviews (user_id, domain, overall, technical, communication, confidence, grammar, answers, date)
+      `INSERT INTO interviews (user_id, domain, overall, technical, communication, confidence, grammar, answers, created_at)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         req.userId,

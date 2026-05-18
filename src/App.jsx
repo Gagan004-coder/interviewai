@@ -12,6 +12,7 @@ import AdminDashboard from './pages/AdminDashboard'
 import SecureInterview from './pages/SecureInterview'
 import Privacy from './pages/Privacy'
 import Terms from './pages/Terms'
+import DeletionInstructions from './pages/DeletionInstructions'
 
 function ProtectedRoute({ children }) {
   const token = localStorage.getItem('iai_token')
@@ -26,6 +27,7 @@ export default function App() {
         <Route path="/auth" element={<Auth />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/terms" element={<Terms />} />
+        <Route path="/deletion-instructions" element={<DeletionInstructions />} />
         <Route path="/app" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
           <Route index element={<Dashboard />} />
           <Route path="resume" element={<ResumeAnalyzer />} />

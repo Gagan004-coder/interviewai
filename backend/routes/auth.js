@@ -70,9 +70,14 @@ router.post('/facebook', async (req, res) => {
   const { accessToken, role = 'user', email: userProvidedEmail } = req.body
   if (!accessToken) return res.status(400).json({ error: 'Missing Facebook access token.' })
 
-  // Ensure facebook_id column exists
+  // Ensure facebook_id column exists (splitting column addition and unique index creation for TiDB compatibility)
   try {
-    await pool.query('ALTER TABLE users ADD COLUMN facebook_id VARCHAR(100) UNIQUE NULL')
+    await pool.query('ALTER TABLE users ADD COLUMN facebook_id VARCHAR(100) NULL')
+    try {
+      await pool.query('ALTER TABLE users ADD UNIQUE INDEX idx_facebook_id (facebook_id)')
+    } catch (idxErr) {
+      // Index already exists, ignore
+    }
   } catch (e) {
     // Column already exists, ignore
   }

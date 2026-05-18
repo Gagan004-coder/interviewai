@@ -5,9 +5,9 @@ import FacebookLogin from '@greatsumini/react-facebook-login'
 import './Auth.css'
 
 const ROLES = [
-  { key: 'user',    label: '👤 Candidate', desc: 'Practice interviews & analyze resumes' },
-  { key: 'company', label: '🏢 Company',   desc: 'Assign secure interviews & view results' },
-  { key: 'admin',   label: '🛡️ Admin',     desc: 'Manage users and platform' },
+  { key: 'user', label: '👤 Candidate', desc: 'Practice interviews & analyze resumes' },
+  { key: 'company', label: '🏢 Company', desc: 'Assign secure interviews & view results' },
+  { key: 'admin', label: '🛡️ Admin', desc: 'Manage users and platform' },
 ]
 
 export default function Auth() {
@@ -66,7 +66,7 @@ export default function Auth() {
   return (
     <div className="auth-page">
       <div className="auth-bg-orb" />
-      <div className="auth-card" style={{maxWidth: 460}}>
+      <div className="auth-card" style={{ maxWidth: 460 }}>
         <div className="auth-logo">🧠 InterviewAI</div>
         <p className="auth-tagline">Your AI-Powered Interview Platform</p>
 
@@ -82,7 +82,7 @@ export default function Auth() {
         <p className="role-desc">{ROLES.find(r => r.key === role)?.desc}</p>
 
         {/* Login / Register tabs */}
-        <div className="auth-tabs" style={{marginTop: 12}}>
+        <div className="auth-tabs" style={{ marginTop: 12 }}>
           <button className={`auth-tab ${tab === 'login' ? 'active' : ''}`} onClick={() => setTab('login')}>Login</button>
           <button className={`auth-tab ${tab === 'register' ? 'active' : ''}`} onClick={() => setTab('register')}>Register</button>
         </div>
@@ -115,10 +115,10 @@ export default function Auth() {
             </div>
           )}
 
-          {error && <div className="form-error" style={{padding:'10px 14px',background:'rgba(239,68,68,0.1)',borderRadius:'8px',border:'1px solid rgba(239,68,68,0.25)'}}>{error}</div>}
+          {error && <div className="form-error" style={{ padding: '10px 14px', background: 'rgba(239,68,68,0.1)', borderRadius: '8px', border: '1px solid rgba(239,68,68,0.25)' }}>{error}</div>}
 
-          <button type="submit" className="btn btn-primary w-full" disabled={loading} style={{justifyContent:'center',marginTop:'8px'}}>
-            {loading ? <span className="spinner" /> : tab === 'login' ? `→ Login as ${ROLES.find(r=>r.key===role)?.label}` : '🚀 Create Account'}
+          <button type="submit" className="btn btn-primary w-full" disabled={loading} style={{ justifyContent: 'center', marginTop: '8px' }}>
+            {loading ? <span className="spinner" /> : tab === 'login' ? `→ Login as ${ROLES.find(r => r.key === role)?.label}` : '🚀 Create Account'}
           </button>
 
           {role !== 'admin' && (
@@ -128,7 +128,7 @@ export default function Auth() {
                 <span style={{ position: 'relative', background: 'var(--card-bg)', padding: '0 8px', zIndex: 2 }}>OR</span>
               </div>
               <FacebookLogin
-                appId="148348736488236"
+                appId="1483487436488236"
                 scope="public_profile"
                 onSuccess={handleFacebookSuccess}
                 onFail={(error) => setError('Facebook login cancelled or failed.')}

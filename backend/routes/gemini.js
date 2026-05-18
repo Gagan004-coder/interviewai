@@ -6,7 +6,10 @@ router.post('/chat', async (req, res) => {
   if (!key) return res.status(500).json({ error: 'Gemini API key not configured on server.' })
   
   const { messages, model, temperature, max_tokens } = req.body
-  const targetModel = model || 'gemini-1.5-flash'
+  let targetModel = model || 'gemini-flash-latest'
+  if (targetModel === 'gemini-1.5-flash') {
+    targetModel = 'gemini-flash-latest'
+  }
   
   // Convert OpenAI messages format to Gemini contents format
   const contents = [];

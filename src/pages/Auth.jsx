@@ -56,7 +56,18 @@ export default function Auth() {
     if (!response.accessToken) return
     setLoading(true); setError('')
     try {
-      await apiFacebookLogin(response.accessToken, role)
+      let res = await apiFacebookLogin(response.accessToken, role)
+      
+      if (res.emailRequired) {
+        const userEmail = prompt("We couldn't retrieve your email from Facebook. Please enter your email address to complete registration:")
+        if (!userEmail) {
+          setError("Email is required to complete your registration.")
+          setLoading(false)
+          return
+        }
+        res = await apiFacebookLogin(response.accessToken, role, userEmail)
+      }
+
       const u = JSON.parse(localStorage.getItem('iai_user') || '{}')
       navigate(u.role === 'company' ? '/company' : u.role === 'admin' ? '/admin' : '/app')
     } catch (err) { setError(err.message) }
@@ -129,7 +140,7 @@ export default function Auth() {
               </div>
               <FacebookLogin
                 appId="1483487436488236"
-                scope="public_profile"
+                scope="public_profile,email"
                 onSuccess={handleFacebookSuccess}
                 onFail={(error) => setError('Facebook login cancelled or failed.')}
                 className="btn w-full"

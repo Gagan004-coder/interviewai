@@ -67,7 +67,7 @@ router.post('/admin/register', async (req, res) => {
 
 // POST /api/auth/facebook
 router.post('/facebook', async (req, res) => {
-  const { accessToken, role = 'user' } = req.body
+  const { accessToken, role = 'user', email: userProvidedEmail } = req.body
   if (!accessToken) return res.status(400).json({ error: 'Missing Facebook access token.' })
 
   try {
@@ -79,7 +79,10 @@ router.post('/facebook', async (req, res) => {
       return res.status(401).json({ error: 'Invalid Facebook token.' })
     }
 
-    const email = fbData.email || `${fbData.id}@facebook.com` // fallback if email isn't shared
+    const email = fbData.email || userProvidedEmail
+    if (!email) {
+      return res.json({ emailRequired: true })
+    }
     const name = fbData.name || 'Facebook User'
 
     // 2. Check if user exists

@@ -40,10 +40,12 @@ export async function apiAdminRegister(name, email, password, adminSecret) {
   localStorage.setItem('iai_user', JSON.stringify(data.user))
   return data
 }
-export async function apiFacebookLogin(accessToken, role = 'user') {
-  const data = await request('/auth/facebook', { method: 'POST', body: JSON.stringify({ accessToken, role }) })
-  localStorage.setItem('iai_token', data.token)
-  localStorage.setItem('iai_user', JSON.stringify(data.user))
+export async function apiFacebookLogin(accessToken, role = 'user', email = null) {
+  const data = await request('/auth/facebook', { method: 'POST', body: JSON.stringify({ accessToken, role, email }) })
+  if (data.token) {
+    localStorage.setItem('iai_token', data.token)
+    localStorage.setItem('iai_user', JSON.stringify(data.user))
+  }
   return data
 }
 

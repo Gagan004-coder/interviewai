@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { apiRegister, apiLogin } from '../services/api'
+import { apiRegister, apiLogin, apiFacebookLogin } from '../services/api'
+import FacebookLogin from '@greatsumini/react-facebook-login'
 import './Auth.css'
 
 const ROLES = [
@@ -45,6 +46,17 @@ export default function Auth() {
         if (!form.email || !form.password) throw new Error('Email and password required.')
         await apiLogin(form.email, form.password)
       }
+      const u = JSON.parse(localStorage.getItem('iai_user') || '{}')
+      navigate(u.role === 'company' ? '/company' : u.role === 'admin' ? '/admin' : '/app')
+    } catch (err) { setError(err.message) }
+    setLoading(false)
+  }
+
+  async function handleFacebookSuccess(response) {
+    if (!response.accessToken) return
+    setLoading(true); setError('')
+    try {
+      await apiFacebookLogin(response.accessToken, role)
       const u = JSON.parse(localStorage.getItem('iai_user') || '{}')
       navigate(u.role === 'company' ? '/company' : u.role === 'admin' ? '/admin' : '/app')
     } catch (err) { setError(err.message) }
@@ -108,6 +120,24 @@ export default function Auth() {
           <button type="submit" className="btn btn-primary w-full" disabled={loading} style={{justifyContent:'center',marginTop:'8px'}}>
             {loading ? <span className="spinner" /> : tab === 'login' ? `→ Login as ${ROLES.find(r=>r.key===role)?.label}` : '🚀 Create Account'}
           </button>
+
+          {role !== 'admin' && (
+            <>
+              <div style={{ textAlign: 'center', margin: '16px 0', color: 'var(--text-muted)', fontSize: '14px', position: 'relative' }}>
+                <hr style={{ position: 'absolute', top: '50%', left: 0, right: 0, borderTop: '1px solid var(--border-color)', margin: 0, zIndex: 1 }} />
+                <span style={{ position: 'relative', background: 'var(--card-bg)', padding: '0 8px', zIndex: 2 }}>OR</span>
+              </div>
+              <FacebookLogin
+                appId="2401909360220774"
+                onSuccess={handleFacebookSuccess}
+                onFail={(error) => setError('Facebook login cancelled or failed.')}
+                className="btn w-full"
+                style={{ justifyContent: 'center', background: '#1877F2', color: 'white', border: 'none' }}
+              >
+                <span style={{ fontSize: '18px', marginRight: '8px' }}>f</span> {tab === 'login' ? 'Continue with Facebook' : 'Sign up with Facebook'}
+              </FacebookLogin>
+            </>
+          )}
         </form>
 
         {role === 'user' && (

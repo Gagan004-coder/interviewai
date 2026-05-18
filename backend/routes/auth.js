@@ -65,4 +65,56 @@ router.post('/admin/register', async (req, res) => {
   } catch (err) { res.status(500).json({ error: 'Server error.' }) }
 })
 
+// POST /api/auth/facebook
+router.post('/facebook', async (req, res) => {
+  const { accessToken, role = 'user' } = req.body
+  if (!accessToken) return res.status(400).json({ error: 'Missing Facebook access token.' })
+
+  try {
+    // 1. Verify token with Facebook
+    const fbRes = await fetch(`https://graph.facebook.com/me?access_token=${accessToken}&fields=id,name,email`)
+    const fbData = await fbRes.json()
+    
+    if (fbData.error) {
+      return res.status(401).json({ error: 'Invalid Facebook token.' })
+    }
+
+    const email = fbData.email || `${fbData.id}@facebook.com` // fallback if email isn't shared
+    const name = fbData.name || 'Facebook User'
+
+    // 2. Check if user exists
+    const [existing] = await pool.query('SELECT * FROM users WHERE email=?', [email.toLowerCase()])
+    
+    let user;
+    if (existing.length) {
+      // User exists, just log them in
+      user = existing[0]
+    } else {
+      // Register new user
+      const allowedRoles = ['user', 'company']
+      const finalRole = allowedRoles.includes(role) ? role : 'user'
+      
+      // Generate a dummy password since password_hash is NOT NULL
+      const dummyPassword = Math.random().toString(36).slice(-10) + Date.now().toString(36)
+      const hash = await bcrypt.hash(dummyPassword, 10)
+      
+      const [result] = await pool.query(
+        'INSERT INTO users (name, email, password_hash, role) VALUES (?,?,?,?)',
+        [name, email.toLowerCase(), hash, finalRole]
+      )
+      user = { id: result.insertId, name, email: email.toLowerCase(), role: finalRole, created_at: new Date() }
+    }
+
+    // 3. Generate JWT
+    const profile = { id: user.id, name: user.name, email: user.email, role: user.role, joinedAt: user.created_at }
+    const token = jwt.sign({ userId: user.id, role: user.role }, SECRET, { expiresIn: '30d' })
+    
+    res.json({ token, user: profile })
+
+  } catch (err) {
+    console.error('Facebook login error:', err)
+    res.status(500).json({ error: 'Server error during Facebook login.' })
+  }
+})
+
 module.exports = router

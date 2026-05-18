@@ -39,7 +39,7 @@ export default function LandingPage() {
         <div className="hero-bg-orb orb2" />
         <div className="hero-bg-orb orb3" />
         <div className="hero-content">
-          <span className="hero-pill"><GeminiLogo style={{ marginRight: '8px' }} /> Powered by Gemini 1.5 Flash</span>
+          <span className="hero-pill"><GeminiLogo style={{ marginRight: '8px' }} /> Powered by Gemini Flash</span>
           <h1 className="hero-title">
             Ace Every Interview<br />
             <span className="gradient-text">with AI-Powered Practice</span>

@@ -1,5 +1,5 @@
 // Gemini AI via backend proxy — API key is server-side only
-const MODEL = 'gemini-1.5-flash'
+const MODEL = 'gemini-flash-latest'
 
 export async function geminiChat(messages, opts = {}) {
   const res = await fetch('/api/gemini/chat', {

@@ -70,42 +70,62 @@ router.post('/facebook', async (req, res) => {
   const { accessToken, role = 'user', email: userProvidedEmail } = req.body
   if (!accessToken) return res.status(400).json({ error: 'Missing Facebook access token.' })
 
+  // Ensure facebook_id column exists
   try {
-    // 1. Verify token with Facebook
-    const fbRes = await fetch(`https://graph.facebook.com/me?access_token=${accessToken}&fields=id,name,email`)
+    await pool.query('ALTER TABLE users ADD COLUMN facebook_id VARCHAR(100) UNIQUE NULL')
+  } catch (e) {
+    // Column already exists, ignore
+  }
+
+  try {
+    // 1. Verify token with Facebook (only request ID and Name to respect privacy)
+    const fbRes = await fetch(`https://graph.facebook.com/me?access_token=${accessToken}&fields=id,name`)
     const fbData = await fbRes.json()
     
     if (fbData.error) {
       return res.status(401).json({ error: 'Invalid Facebook token.' })
     }
 
-    const email = fbData.email || userProvidedEmail
-    if (!email) {
-      return res.json({ emailRequired: true })
-    }
+    const fbId = fbData.id
     const name = fbData.name || 'Facebook User'
 
-    // 2. Check if user exists
-    const [existing] = await pool.query('SELECT * FROM users WHERE email=?', [email.toLowerCase()])
+    // 2. Check if user already linked this Facebook account
+    const [existing] = await pool.query('SELECT * FROM users WHERE facebook_id=?', [fbId])
     
     let user;
     if (existing.length) {
-      // User exists, just log them in
+      // Secure returning user, log in directly
       user = existing[0]
     } else {
-      // Register new user
-      const allowedRoles = ['user', 'company']
-      const finalRole = allowedRoles.includes(role) ? role : 'user'
+      // New user or linking existing account. Verify if email was provided
+      if (!userProvidedEmail) {
+        return res.json({ emailRequired: true })
+      }
+
+      const email = userProvidedEmail.trim().toLowerCase()
+
+      // Check if a user with this email already exists to link them
+      const [existingEmail] = await pool.query('SELECT * FROM users WHERE email=?', [email])
       
-      // Generate a dummy password since password_hash is NOT NULL
-      const dummyPassword = Math.random().toString(36).slice(-10) + Date.now().toString(36)
-      const hash = await bcrypt.hash(dummyPassword, 10)
-      
-      const [result] = await pool.query(
-        'INSERT INTO users (name, email, password_hash, role) VALUES (?,?,?,?)',
-        [name, email.toLowerCase(), hash, finalRole]
-      )
-      user = { id: result.insertId, name, email: email.toLowerCase(), role: finalRole, created_at: new Date() }
+      if (existingEmail.length) {
+        // Link Facebook to existing account
+        await pool.query('UPDATE users SET facebook_id=? WHERE id=?', [fbId, existingEmail[0].id])
+        user = existingEmail[0]
+        user.facebook_id = fbId
+      } else {
+        // Register a new user
+        const allowedRoles = ['user', 'company']
+        const finalRole = allowedRoles.includes(role) ? role : 'user'
+        
+        const dummyPassword = Math.random().toString(36).slice(-10) + Date.now().toString(36)
+        const hash = await bcrypt.hash(dummyPassword, 10)
+        
+        const [result] = await pool.query(
+          'INSERT INTO users (name, email, password_hash, role, facebook_id) VALUES (?,?,?,?,?)',
+          [name, email, hash, finalRole, fbId]
+        )
+        user = { id: result.insertId, name, email, role: finalRole, facebook_id: fbId, created_at: new Date() }
+      }
     }
 
     // 3. Generate JWT

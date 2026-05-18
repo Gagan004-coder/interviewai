@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS users (
   email       VARCHAR(150)  NOT NULL UNIQUE,
   password_hash VARCHAR(255) NOT NULL,
   role        VARCHAR(20)   DEFAULT 'user',
+  facebook_id VARCHAR(100)  UNIQUE NULL,
   created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 

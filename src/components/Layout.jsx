@@ -42,6 +42,7 @@ export default function Layout() {
 
   function logout() {
     localStorage.removeItem('iai_user')
+    localStorage.removeItem('iai_token')
     navigate('/auth')
   }
 

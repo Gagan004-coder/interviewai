@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { geminiChat } from '../services/gemini'
+import GeminiLogo from './GeminiLogo'
 import './AIChat.css'
 
 export default function AIChat() {
@@ -46,8 +47,8 @@ export default function AIChat() {
       {isOpen && (
         <div className="ai-chat-window">
           <div className="ai-chat-header">
-            <div className="ai-chat-title">
-              <span className="ai-chat-icon">🤖</span> AI Help
+            <div className="ai-chat-title" style={{ display: 'flex', alignItems: 'center' }}>
+              <GeminiLogo style={{ marginRight: '8px', width: '20px', height: '20px' }} /> AI Help
             </div>
             <button className="ai-chat-close" onClick={() => setIsOpen(false)}>✕</button>
           </div>
@@ -79,8 +80,8 @@ export default function AIChat() {
         </div>
       )}
       
-      <button className={`ai-chat-fab ${isOpen ? 'hidden' : ''}`} onClick={() => setIsOpen(true)}>
-        🤖
+      <button className={`ai-chat-fab ${isOpen ? 'hidden' : ''}`} onClick={() => setIsOpen(true)} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <GeminiLogo style={{ width: '28px', height: '28px' }} />
       </button>
     </div>
   )
